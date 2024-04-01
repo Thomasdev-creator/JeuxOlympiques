@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <!-- On boucle à travers les billets de la base de données -->
+    <!-- alt correspond à la description de l'image -->
+    {% for ticket in tickets %}
+        <h2>{{ ticket.type_of_ticket }}</h2>
+        <img src="{{ ticket.thumbnail.url }}" alt="{{ ticket.type_of_ticket }}" style="max-width: 250px;">
+        <a href="{{ ticket.get_absolute_url }}">Voir l'offre</a>
+    {% endfor %}
+
+
+{% endblock %}

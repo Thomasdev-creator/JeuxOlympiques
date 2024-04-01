@@ -1,0 +1,7 @@
+.env
+env/
+media/
+.DS_Store
+assets/
+*.pyc
+.idea/
