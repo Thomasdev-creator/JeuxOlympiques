@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 
 from accounts.views import signup, logout_user, login_user
-from store.views import index, ticket_detail, add_to_cart, cart, delete_cart, create_checkout_session
+from store.views import index, ticket_detail, add_to_cart, cart, delete_cart, create_checkout_session, checkout_success
 # On importe le fichier settings afin de pouvoir l'utiliser
 from JeuxOlympiques import settings
 
@@ -31,6 +31,7 @@ urlpatterns = [
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
     path('cart/', cart, name='cart'),
+    path('cart/success', checkout_success, name='checkout-success'),
     path('cart/create-checkout-session/', create_checkout_session, name='create-checkout-session'),
     path('cart/delete', delete_cart, name='delete-cart'),
     path('ticket/<str:slug>/', ticket_detail, name='ticket'),

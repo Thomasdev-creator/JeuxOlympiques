@@ -63,25 +63,26 @@ def cart(request):
 
 
 def create_checkout_session(request):
+    cart = request.user.cart
+
+    # On récupère le prix et la quantité que l'on ajoute à notre session de payment avec line_items
+    line_items = [{"price": order.ticket.stripe_id,
+                   "quantity": order.quantity} for order in cart.orders.all()]
+
     session = stripe.checkout.Session.create(
         locale='fr',
         payment_method_types=['card'],
-        line_items=[{
-            'price_data': {
-                'currency': 'usd',
-                'product_data': {
-                    'name': 'T-shirt',
-                },
-                'unit_amount': 2000,
-            },
-            'quantity': 1,
-        }],
+        line_items=line_items,
         mode='payment',
         success_url='http://127.0.0.1.8000',
         cancel_url='http://127.0.0.1.8000',
     )
     # Code 303 est le code de redirection
     return redirect(session.url, code=303)
+
+
+def checkout_success(request):
+    return render(request, 'store/templates/tickets/success.html')
 
 
 def delete_cart(request):
