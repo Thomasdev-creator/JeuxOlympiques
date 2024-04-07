@@ -22,7 +22,8 @@
 {% endif %}
 
 <!-- Relation OneToOne, le panier de l'utilisateur est donc retourné -->
-{% if user.cart %}
+<!-- Affiche le panier utilisateur seulement si il n'a pas déjà été commandé -->
+{% if user.cart and not user.cart.ordered %}
     <p>
         <a href="{% url 'cart' %}">Voir le panier ({{ user.cart.orders.count }})</a>
     </p>

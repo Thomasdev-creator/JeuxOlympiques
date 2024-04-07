@@ -1,13 +1,23 @@
+from os import environ
+from pprint import pprint
+
+import environ
 import stripe
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 from JeuxOlympiques import settings
+from accounts.models import CustomUser
 # Permet de récupérer les produits dans la base de données
 from store.models import Ticket, Cart, Order
 
 stripe.api_key = settings.STRIPE_API_KEY
+env = environ.Env()
+
+environ.Env.read_env()
 
 
 # Create your views here.
@@ -63,7 +73,7 @@ def cart(request):
 
 
 def create_checkout_session(request):
-    cart = request.user.cart
+    cart = get_object_or_404(Cart, user=request.user)
 
     # On récupère le prix et la quantité que l'on ajoute à notre session de payment avec line_items
     line_items = [{"price": order.ticket.stripe_id,
@@ -74,7 +84,7 @@ def create_checkout_session(request):
         payment_method_types=['card'],
         line_items=line_items,
         mode='payment',
-        success_url='http://127.0.0.1.8000',
+        success_url=request.build_absolute_uri(reverse('checkout-success')),
         cancel_url='http://127.0.0.1.8000',
     )
     # Code 303 est le code de redirection
@@ -82,7 +92,7 @@ def create_checkout_session(request):
 
 
 def checkout_success(request):
-    return render(request, 'store/templates/tickets/success.html')
+    return render(request, 'tickets/success.html')
 
 
 def delete_cart(request):
@@ -92,3 +102,49 @@ def delete_cart(request):
         cart.delete()
 
     return redirect('index')
+
+
+@csrf_exempt
+# Authentifie les informations envoyés par stipe
+def stripe_webhook(request):
+    # On récupère le corps de la requête que l'on retourne avec un print et un status 200
+    payload = request.body
+    # Clé obtenu après exécution de la commande stripe listen --forward-to 127.0.0.1:localhost/stripe-webhook/
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    endpoint_secret = env('ENDPOINT_SECRET')
+    event = None
+    # On construit un évènement stripe avec try puis on renvoie un status
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Payload invalide
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Signature invalide
+        return HttpResponse(status=400)
+
+    # On vérifie que le client est authentifié et que le paiement est accepté
+    # Si l'évènement type de notre dictionnaire est égale à checkout.session.completed on retourne la fonction
+    if event['type'] == 'checkout.session.completed':
+        data = event['data']['object']
+        return complete_order(data)
+
+    # Signature correcte
+    return HttpResponse(status=200)
+
+
+def complete_order(data):
+    # On récupère les données utilisateur à partir du webhook stripe
+    user_email = data['customer_details']['email']
+    user = get_object_or_404(CustomUser, email=user_email)
+    user.cart.ordered = True
+    # On récupère la date et l'heure que l'on ajoute à ordered_date de notre modèle
+    user.cart.ordered_date = timezone.now()
+    user.cart.save()
+
+    user.cart.delete()
+    # Effacer le contenu du panier après la commande
+    return HttpResponse(status=200)
+    # pprint(data)
