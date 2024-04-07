@@ -9,12 +9,12 @@
 <body class="bg-gray-300">
 <!-- On récupère l'url à partir du name indiquer dans le fichier urls.py -->
 <a href="{% url 'index' %}">
-    <h1 class="text-5xl text-center pt-4">PARIS 2024</h1>
+    <h1 class="text-4xl text-center pt-4">PARIS 2024</h1>
 </a>
 <!-- On affiche le bouton pour s'inscrire seulement si l'utilisateur n'est pas connecté -->
 <!-- user et is_authenticated sont disponibles par défault -->
 {% if user.is_authenticated %}
-    <p>Bonjour {{ user.username }}, vous êtes connecté!</p>
+    <p>Bonjour {{ user.email }}, vous êtes connecté!</p>
     <a href="{% url 'logout' %}">Déconnexion</a>
 {% else %}
     <a href="{% url 'login' %}">Connexion</a>

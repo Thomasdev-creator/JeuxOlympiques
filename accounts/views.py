@@ -1,5 +1,10 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from django.forms import model_to_dict
 from django.shortcuts import render, redirect
+
+from accounts.forms import UserForm
 
 # On récupère la fonction get user model
 User = get_user_model()
@@ -49,3 +54,23 @@ def logout_user(request):
     # Django connaît l'utilisateur connecter avec la requête et peut donc le déconnecter automatiquement
     logout(request)
     return redirect('index')
+
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        is_valid = authenticate(email=request.POST.get("email"), password=request.POST.get("password"))
+        if is_valid:
+            user = request.user
+            user.first_name = request.POST.get("first_name")
+            user.last_name = request.POST.get("last_name")
+            user.save()
+        else:
+            # On importe le module message
+            messages.add_message(request, messages.ERROR, "Le mot de passe n'est pas valide")
+
+        return redirect('profile')
+
+    # transforme un model en dictionnaire
+    form = UserForm(initial=model_to_dict(request.user, exclude='password'))
+    return render(request, "accounts/profile.html", context={"form": form})

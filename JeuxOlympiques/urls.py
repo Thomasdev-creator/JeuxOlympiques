@@ -14,11 +14,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from accounts.views import signup, logout_user, login_user
+from accounts.views import signup, logout_user, login_user, profile
 from store.views import index, ticket_detail, add_to_cart, cart, delete_cart, create_checkout_session
 from store.views import checkout_success, stripe_webhook
 # On importe le fichier settings afin de pouvoir l'utiliser
@@ -28,6 +29,7 @@ urlpatterns = [
     # page d'accueil
     path('', index, name='index'),
     path('admin/', admin.site.urls),
+    path('profile/', profile, name='profile'),
     path('signup/', signup, name='signup'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
