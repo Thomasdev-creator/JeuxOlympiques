@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 
 from JeuxOlympiques.settings import AUTH_USER_MODEL
 from accounts.models import CustomUser
@@ -10,7 +11,7 @@ from accounts.models import CustomUser
 
 class Ticket(models.Model):
     name = models.CharField(max_length=128)
-    slug = models.SlugField(max_length=128)
+    slug = models.SlugField(max_length=128, blank=True)
     description = models.TextField(blank=True)
     # valeur par default est 0.0
     price = models.FloatField(default=0.0)
@@ -34,6 +35,11 @@ class Ticket(models.Model):
         # Et on le passe au paramètre slug que l'on retrouve dans le fichier urls
         return reverse('ticket', kwargs={'slug': self.slug})
 
+    def save(self, *args, **kwargs):
+        # Si un slug existe on l'utilise sinon on en créer un nouveau à partir du nom
+        self.slug = self.slug or slugify(self.name)
+        super().save(*args, **kwargs)
+
 
 class Order(models.Model):
     # Relation un à plusieurs. Un utilisatateur peut commander plusieurs billets
@@ -55,8 +61,7 @@ class Cart(models.Model):
     orders = models.ManyToManyField(Order)
 
     def __str__(self):
-        # On affiche le nom d'utilisateur
-        return self.user.username
+        return f"Panier de l'utilisateur {self.user.email}"
 
     def delete(self, *args, **kwargs):
         for order in self.orders.all():
@@ -69,6 +74,3 @@ class Cart(models.Model):
         self.orders.clear()
         # On ne remplace pas la méthode delete mais on la surcharge
         super().delete(*args, **kwargs)
-
-
-

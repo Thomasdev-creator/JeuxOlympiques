@@ -3,6 +3,7 @@ from pprint import pprint
 
 import environ
 import stripe
+from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -10,7 +11,8 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from JeuxOlympiques import settings
-from accounts.models import CustomUser
+from accounts.models import CustomUser, ShippingAddress
+from store.forms import OrderForm
 # Permet de récupérer les produits dans la base de données
 from store.models import Ticket, Cart, Order
 
@@ -64,12 +66,26 @@ def add_to_cart(request, slug):
 
 
 def cart(request):
+    orders = Order.objects.filter(user=request.user)
+    if orders.count() == 0:
+        return redirect("index")
     # Un récupère la requête de l'utilisateur que l'on ajoute au parmètre user sur le modèle Cart,
-    # Si il existe on le récupère puis on le stock dans la variable cart
-    cart = get_object_or_404(Cart, user=request.user)
+    # On créer une (class) orderformset, à partir de modelformsetfactory
+    OrderFormSet = modelformset_factory(Order, form=OrderForm, extra=0)
+    formset = OrderFormSet(queryset=orders)
 
     # On retourne le template puis on récupère tout les éléments du panier
-    return render(request, 'tickets/cart.html', context={'orders': cart.orders.all()})
+    return render(request, 'tickets/cart.html', context={'forms': formset})
+
+
+def update_quantitites(request):
+    OrderFormSet = modelformset_factory(Order, form=OrderForm, extra=0)
+    # On récupère le formulaire, si il est valide on le sauvegarde
+    formset = OrderFormSet(request.POST, queryset=Order.objects.filter(user=request.user))
+    if formset.is_valid():
+        formset.save()
+
+    return redirect('cart')
 
 
 def create_checkout_session(request):
@@ -84,6 +100,8 @@ def create_checkout_session(request):
         payment_method_types=['card'],
         line_items=line_items,
         mode='payment',
+        customer_email=request.user.email,
+        shipping_address_collection={"allowed_countries": ["FR", "US", "CA"]},
         success_url=request.build_absolute_uri(reverse('checkout-success')),
         cancel_url='http://127.0.0.1.8000',
     )
@@ -129,22 +147,59 @@ def stripe_webhook(request):
     # Si l'évènement type de notre dictionnaire est égale à checkout.session.completed on retourne la fonction
     if event['type'] == 'checkout.session.completed':
         data = event['data']['object']
-        return complete_order(data)
+        try:
+            user = get_object_or_404(CustomUser, email=data['customer_details']['email'])
+        except KeyError:
+            return HttpResponse("Invalid email", status=404)
+
+        complete_order(data=data, user=user)
+        save_shipping_adress(data=data, user=user)
+        return HttpResponse(status=200)
 
     # Signature correcte
     return HttpResponse(status=200)
 
 
-def complete_order(data):
-    # On récupère les données utilisateur à partir du webhook stripe
-    user_email = data['customer_details']['email']
-    user = get_object_or_404(CustomUser, email=user_email)
-    user.cart.ordered = True
-    # On récupère la date et l'heure que l'on ajoute à ordered_date de notre modèle
-    user.cart.ordered_date = timezone.now()
-    user.cart.save()
-
+def complete_order(data, user):
+    # pprint(data)
+    user.stripe_id = data['payment_intent']
     user.cart.delete()
+    user.save()
     # Effacer le contenu du panier après la commande
     return HttpResponse(status=200)
-    # pprint(data)
+
+
+def save_shipping_adress(data, user):
+    """
+    "shipping_details": {
+        "address": {
+            "city": "Paris",
+            "country": "FR",
+            "line1": "1 Rue de Tombouctou",
+            "line2": null,
+            "postal_code": "75018",
+            "state": ""
+        },
+        "name": "Tom"
+    },
+    """
+    try:
+        address = data['shipping_details']['address']
+        name = data['shipping_details']['name']
+        city = address['city']
+        country = address['country']
+        line1 = address['line1']
+        line2 = address['line2']
+        zip_code = address['postal_code']
+    except KeyError:
+        return HttpResponse(status=400)
+
+    ShippingAddress.objects.get_or_create(user=user,
+                                          name=name,
+                                          city=city,
+                                          country=country.lower(),
+                                          address_1=line1,
+                                          address_2=line2 or "",
+                                          zip_code=zip_code)
+
+    return HttpResponse(status=200)

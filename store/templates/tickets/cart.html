@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-    {% for order in orders %}
-        <h2>{{ order.ticket.name }}</h2>
-        <img src="{{ order.ticket.thumbnail.url }}" alt="{{ order.ticket.type_of_ticket }}" style="max-width: 250px;">
-        <p>{{ order.quantity }} dans le panier</p>
-    {% endfor %}
+    <!-- On redirige notre formulaire vers la vue update-quantities -->
+    <form method="POST" action="{% url 'update-quantities' %}">
+        {% csrf_token %}
+        <!-- Très important -->
+        {{ forms.management_form }}
+        {% for form in forms %}
+            <div>
+                <h3>{{ form.instance.ticket.name }}</h3>
+                <img src="{{ form.instance.ticket.thumbnail.url }}" alt="Image du billet" style="max-width: 200px">
+                <p>{{ form.as_p }}</p>
+            </div>
+        {% endfor %}
+        <button type="submit">Mettre à jour les quantités</button>
+    </form>
 
     <form action="{% url 'create-checkout-session' %}" method="post">
         {% csrf_token %}

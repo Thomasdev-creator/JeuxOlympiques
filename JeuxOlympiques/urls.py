@@ -21,7 +21,7 @@ from django.urls import path
 
 from accounts.views import signup, logout_user, login_user, profile
 from store.views import index, ticket_detail, add_to_cart, cart, delete_cart, create_checkout_session
-from store.views import checkout_success, stripe_webhook
+from store.views import checkout_success, stripe_webhook, update_quantitites
 # On importe le fichier settings afin de pouvoir l'utiliser
 from JeuxOlympiques import settings
 
@@ -35,6 +35,7 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('stripe-webhook/', stripe_webhook, name="stripe-webhook"),
     path('cart/', cart, name='cart'),
+    path('cart/update_quantities/', update_quantitites, name='update-quantities'),
     path('cart/success', checkout_success, name='checkout-success'),
     path('cart/create-checkout-session/', create_checkout_session, name='create-checkout-session'),
     path('cart/delete', delete_cart, name='delete-cart'),

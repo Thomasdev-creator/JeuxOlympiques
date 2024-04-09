@@ -5,6 +5,7 @@ from django.forms import model_to_dict
 from django.shortcuts import render, redirect
 
 from accounts.forms import UserForm
+from accounts.models import ShippingAddress
 
 # On récupère la fonction get user model
 User = get_user_model()
@@ -72,5 +73,9 @@ def profile(request):
         return redirect('profile')
 
     # transforme un model en dictionnaire
-    form = UserForm(initial=model_to_dict(request.user, exclude='password'))
-    return render(request, "accounts/profile.html", context={"form": form})
+    # form = UserForm(initial=model_to_dict(request.user, exclude='password'))
+
+    form = UserForm(instance=request.user)
+    addresses = request.user.addresses.all()
+
+    return render(request, "accounts/profile.html", context={"form": form, "addresses": addresses})
