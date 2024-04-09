@@ -1,4 +1,5 @@
 from django.db import models
+from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
@@ -39,6 +40,10 @@ class Ticket(models.Model):
         # Si un slug existe on l'utilise sinon on en créer un nouveau à partir du nom
         self.slug = self.slug or slugify(self.name)
         super().save(*args, **kwargs)
+
+    # On gère le cas ou aucune image n'est ajouté à thumbnail
+    def thumbnail_url(self):
+        return self.thumbnail.url if self.thumbnail else static("img/default.jpg")
 
 
 class Order(models.Model):

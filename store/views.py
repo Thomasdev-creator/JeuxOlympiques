@@ -3,6 +3,7 @@ from pprint import pprint
 
 import environ
 import stripe
+from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -50,7 +51,10 @@ def add_to_cart(request, slug):
     return redirect(reverse('store:ticket', kwargs={'slug': slug}))
 
 
+@login_required(login_url='accounts:login')
 def cart(request):
+    """if request.user.is_anonymous:
+        return redirect('index')"""
     # Récupérer toutes les commandes non ordonnées de l'utilisateur connecté
     orders = Order.objects.filter(user=request.user, ordered=False)
 

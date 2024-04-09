@@ -57,7 +57,7 @@ def logout_user(request):
     return redirect('index')
 
 
-@login_required
+@login_required()
 def profile(request):
     if request.method == 'POST':
         is_valid = authenticate(email=request.POST.get("email"), password=request.POST.get("password"))

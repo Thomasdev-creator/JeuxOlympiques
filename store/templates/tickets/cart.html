@@ -9,7 +9,7 @@
         {% for form in forms %}
             <div>
                 <h3>{{ form.instance.ticket.name }}</h3>
-                <img src="{{ form.instance.ticket.thumbnail.url }}" alt="Image du billet" style="max-width: 200px">
+                <img src="{{ form.instance.ticket.thumbnail_url }}" alt="Image du billet" style="max-width: 200px">
                 <p>{{ form.as_p }}</p>
             </div>
         {% endfor %}

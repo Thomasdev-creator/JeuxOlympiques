@@ -5,7 +5,7 @@
     <h1 class="text-2xl font-bold">Billeterie</h1>
     <h2>{{ ticket.name }}</h2>
     <h3>{{ ticket.price }} euros</h3>
-    <img src="{{ ticket.thumbnail.url }}" alt="{{ ticket.type_of_ticket }}" style="max-width: 250px;">
+    <img src="{{ ticket.thumbnail_url }}" alt="{{ ticket.type_of_ticket }}" style="max-width: 250px;">
     <p>{{ ticket.description }}</p>
     <p>{{ ticket.quantity }}</p>
     {% if user.is_authenticated %}
