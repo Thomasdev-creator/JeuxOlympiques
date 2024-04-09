@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.forms import model_to_dict
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.forms import UserForm
 from accounts.models import ShippingAddress
@@ -70,7 +70,7 @@ def profile(request):
             # On importe le module message
             messages.add_message(request, messages.ERROR, "Le mot de passe n'est pas valide")
 
-        return redirect('profile')
+        return redirect('accounts:profile')
 
     # transforme un model en dictionnaire
     # form = UserForm(initial=model_to_dict(request.user, exclude='password'))
@@ -79,3 +79,10 @@ def profile(request):
     addresses = request.user.addresses.all()
 
     return render(request, "accounts/profile.html", context={"form": form, "addresses": addresses})
+
+
+@login_required
+def delete_address(request, pk):
+    address = get_object_or_404(ShippingAddress, pk=pk, user=request.user)
+    address.delete()
+    return redirect('accounts:profile')

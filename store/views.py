@@ -43,30 +43,30 @@ def ticket_detail(request, slug):
 
 def add_to_cart(request, slug):
     # On récupère notre utilisateur que l'on stock dans la variable user
-    user = request.user
-    # On récupère le ticket
-    ticket = get_object_or_404(Ticket, slug=slug)
-    # On essaye de récupérer le panier de l'utilisateur, on le créer si il n'existe pas.
-    # Deux éléments sont retouné à droite, d'ou les deux variables
-    cart, _ = Cart.objects.get_or_create(user=user)
-    # On récupérer les billet si il n'existe pas et on les stock dans order, et created sera égal à False,
-    # Si les billets existent dans le panier, on créer le panier et created sera égale à True
-    order, created = Order.objects.get_or_create(user=user, ordered=False, ticket=ticket)
-    # Si l'élément n'existe pas
-    if created:
-        cart.orders.add(order)
-        cart.save()
-    # Si l'élément existe déjà, on le récupère et on incrémente de 1
-    else:
-        order.quantity += 1
-        order.save()
-
+    # user = instance de custom user
+    user: CustomUser = request.user
+    user.add_to_cart(slug=slug)
     # On redirige vers la page du produit
-    return redirect(reverse('ticket', kwargs={'slug': slug}))
+    return redirect(reverse('store:ticket', kwargs={'slug': slug}))
 
 
 def cart(request):
-    orders = Order.objects.filter(user=request.user)
+    # Récupérer toutes les commandes non ordonnées de l'utilisateur connecté
+    orders = Order.objects.filter(user=request.user, ordered=False)
+
+    # Vérifier si le panier est vide
+    if not orders.exists():
+        return redirect("index")
+
+    # Créer un formulaire pour afficher les articles du panier
+    OrderFormSet = modelformset_factory(Order, form=OrderForm, extra=0)
+    formset = OrderFormSet(queryset=orders)
+
+    # Retourner le template avec les articles du panier
+    return render(request, 'tickets/cart.html', context={'forms': formset})
+
+
+"""orders = Order.objects.filter(user=request.user)
     if orders.count() == 0:
         return redirect("index")
     # Un récupère la requête de l'utilisateur que l'on ajoute au parmètre user sur le modèle Cart,
@@ -75,7 +75,7 @@ def cart(request):
     formset = OrderFormSet(queryset=orders)
 
     # On retourne le template puis on récupère tout les éléments du panier
-    return render(request, 'tickets/cart.html', context={'forms': formset})
+    return render(request, 'tickets/cart.html', context={'forms': formset})"""
 
 
 def update_quantitites(request):
@@ -85,7 +85,7 @@ def update_quantitites(request):
     if formset.is_valid():
         formset.save()
 
-    return redirect('cart')
+    return redirect('store:cart')
 
 
 def create_checkout_session(request):
@@ -102,7 +102,7 @@ def create_checkout_session(request):
         mode='payment',
         customer_email=request.user.email,
         shipping_address_collection={"allowed_countries": ["FR", "US", "CA"]},
-        success_url=request.build_absolute_uri(reverse('checkout-success')),
+        success_url=request.build_absolute_uri(reverse('store:checkout-success')),
         cancel_url='http://127.0.0.1.8000',
     )
     # Code 303 est le code de redirection

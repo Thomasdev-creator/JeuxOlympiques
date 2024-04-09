@@ -10,7 +10,7 @@
     <p>{{ ticket.quantity }}</p>
     {% if user.is_authenticated %}
     <p>
-        <a href="{% url 'add-to-cart' ticket.slug %}">Ajouter les billets au panier</a>
+        <a href="{% url 'store:add-to-cart' ticket.slug %}">Ajouter les billets au panier</a>
     </p>
     {% endif %}
 {% endblock %}

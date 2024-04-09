@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 
 from JeuxOlympiques.settings import AUTH_USER_MODEL
-from accounts.models import CustomUser
+# from accounts.models import CustomUser
 
 
 # Create your models here.
@@ -33,7 +33,7 @@ class Ticket(models.Model):
         # Dans un paramètre kwargs on lui passe un dictionnaire avec les différents éléments de l'url
         # C'est donc le slug de l'instance du ticket
         # Et on le passe au paramètre slug que l'on retrouve dans le fichier urls
-        return reverse('ticket', kwargs={'slug': self.slug})
+        return reverse('store:ticket', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         # Si un slug existe on l'utilise sinon on en créer un nouveau à partir du nom
@@ -43,7 +43,7 @@ class Ticket(models.Model):
 
 class Order(models.Model):
     # Relation un à plusieurs. Un utilisatateur peut commander plusieurs billets
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     ordered = models.BooleanField(default=False)
@@ -56,7 +56,7 @@ class Order(models.Model):
 
 class Cart(models.Model):
     # Un utilisateur peut avoir un seul panier
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     # une commande peut avoir plusieurs billets
     orders = models.ManyToManyField(Order)
 

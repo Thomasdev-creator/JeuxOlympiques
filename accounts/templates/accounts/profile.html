@@ -15,8 +15,9 @@
         {% endif %}
     <button type="submit">Sauvegarder</button>
     </form>
-
+    {% if addresses %}
     <h1>Adresse de livraison</h1>
+    {% endif %}
 
     {% for address in addresses %}
         {% include 'accounts/address.html' %}

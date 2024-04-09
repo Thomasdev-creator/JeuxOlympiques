@@ -17,11 +17,9 @@ Including another URLconf
 
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from accounts.views import signup, logout_user, login_user, profile
-from store.views import index, ticket_detail, add_to_cart, cart, delete_cart, create_checkout_session
-from store.views import checkout_success, stripe_webhook, update_quantitites
+from store.views import index
 # On importe le fichier settings afin de pouvoir l'utiliser
 from JeuxOlympiques import settings
 
@@ -29,16 +27,6 @@ urlpatterns = [
     # page d'accueil
     path('', index, name='index'),
     path('admin/', admin.site.urls),
-    path('profile/', profile, name='profile'),
-    path('signup/', signup, name='signup'),
-    path('login/', login_user, name='login'),
-    path('logout/', logout_user, name='logout'),
-    path('stripe-webhook/', stripe_webhook, name="stripe-webhook"),
-    path('cart/', cart, name='cart'),
-    path('cart/update_quantities/', update_quantitites, name='update-quantities'),
-    path('cart/success', checkout_success, name='checkout-success'),
-    path('cart/create-checkout-session/', create_checkout_session, name='create-checkout-session'),
-    path('cart/delete', delete_cart, name='delete-cart'),
-    path('ticket/<str:slug>/', ticket_detail, name='ticket'),
-    path('ticket/<str:slug>/add-to-cart/', add_to_cart, name='add-to-cart'),
+    path('accounts/', include('accounts.urls')),
+    path('billeterie/', include('store.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -15,4 +15,8 @@
     <p>
         {{ address.get_country_display|upper }}
     </p>
+
+    <p>
+        <a href="{% url 'accounts:delete-address' address.pk %}">Supprimer l'adresse</a>
+    </p>
 </div>

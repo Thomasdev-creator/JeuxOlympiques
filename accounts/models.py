@@ -1,8 +1,11 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.shortcuts import get_object_or_404
 
 from iso3166 import countries
+
+from store.models import Cart, Order, Ticket
 
 
 # Create your models here.
@@ -37,6 +40,26 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
+
+    def add_to_cart(self, slug):
+        # On récupère le ticket
+        ticket = get_object_or_404(Ticket, slug=slug)
+        # On essaye de récupérer le panier de l'utilisateur, on le créer si il n'existe pas.
+        # Deux éléments sont retouné à droite, d'ou les deux variables
+        cart, _ = Cart.objects.get_or_create(user=self)
+        # On récupérer les billet si il n'existe pas et on les stock dans order, et created sera égal à False,
+        # Si les billets existent dans le panier, on créer le panier et created sera égale à True
+        order, created = Order.objects.get_or_create(user=self, ordered=False, ticket=ticket)
+        # Si l'élément n'existe pas
+        if created:
+            cart.orders.add(order)
+            cart.save()
+        # Si l'élément existe déjà, on le récupère et on incrémente de 1
+        else:
+            order.quantity += 1
+            order.save()
+
+        return cart
 
     def __str__(self):
         return self.email
