@@ -1,3 +1,4 @@
+import secrets
 from os import environ
 from pprint import pprint
 
@@ -114,7 +115,9 @@ def create_checkout_session(request):
 
 
 def checkout_success(request):
-    return render(request, 'tickets/success.html')
+    order = Order.objects.filter(user=request.user).latest('id')
+    qr_code_thumbnail = order.qr_code_thumbnail
+    return render(request, 'tickets/success.html', context={'qr_code_thumbnail': qr_code_thumbnail})
 
 
 def delete_cart(request):
@@ -153,10 +156,11 @@ def stripe_webhook(request):
         data = event['data']['object']
         try:
             user = get_object_or_404(CustomUser, email=data['customer_details']['email'])
+            auth_key = user.auth_key
         except KeyError:
             return HttpResponse("Invalid email", status=404)
 
-        complete_order(data=data, user=user)
+        complete_order(data=data, user=user, auth_key=auth_key)
         save_shipping_adress(data=data, user=user)
         return HttpResponse(status=200)
 
@@ -164,11 +168,13 @@ def stripe_webhook(request):
     return HttpResponse(status=200)
 
 
-def complete_order(data, user):
+def complete_order(data, user, auth_key):
     # pprint(data)
+    user.auth_key = auth_key
     user.stripe_id = data['payment_intent']
-    user.cart.delete()
+    user.cart.delete(auth_key=auth_key)
     user.save()
+
     # Effacer le contenu du panier après la commande
     return HttpResponse(status=200)
 

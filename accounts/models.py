@@ -35,6 +35,7 @@ class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(max_length=254, unique=True)
     stripe_id = models.CharField(max_length=90, blank=True)
+    auth_key = models.CharField(max_length=32, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

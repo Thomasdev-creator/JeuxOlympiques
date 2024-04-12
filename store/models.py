@@ -1,10 +1,21 @@
+import qrcode
+import base64
+import secrets
+from io import BytesIO
+from PIL import Image
+
+from django.core.files import File
+
 from django.db import models
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 
+from JeuxOlympiques import settings
 from JeuxOlympiques.settings import AUTH_USER_MODEL
+
+
 # from accounts.models import CustomUser
 
 
@@ -54,6 +65,9 @@ class Order(models.Model):
     ordered = models.BooleanField(default=False)
     # date de commande des billets
     ordered_date = models.DateTimeField(blank=True, null=True)
+    key_after_success_payment = models.CharField(max_length=32, blank=True, null=True)
+    combined_key = models.CharField(max_length=60, blank=True, null=True)
+    qr_code_thumbnail = models.ImageField(upload_to='QRCode', blank=True, null=True)
 
     def __str__(self):
         return f"{self.ticket.name} - ({self.quantity})"
@@ -74,6 +88,50 @@ class Cart(models.Model):
             # Méthode qui permet d'afficher la date par rapport au fuseau horaire
             order.ordered_date = timezone.now()
             order.save()
+
+            if not order.key_after_success_payment:
+                key = secrets.token_urlsafe(16)
+                order.key_after_success_payment = key
+                order.save()
+
+            # On récupère auth key de l'utilisateur depuis la vue complete order
+            auth_key = kwargs.pop('auth_key', None)
+            key_after_success_payment = order.key_after_success_payment
+            # Concaténation des deux clefs
+            combined_key = f"{auth_key}:{key_after_success_payment}"
+            if auth_key and key_after_success_payment:
+                order.combined_key = combined_key
+                order.save()
+
+                # Créer le QR code et sa version miniaturisée
+                if order.combined_key:
+                    qr = qrcode.QRCode(
+                        version=1,
+                        error_correction=qrcode.constants.ERROR_CORRECT_L,
+                        box_size=10,
+                        border=4,
+                    )
+                    qr.add_data(order.combined_key)
+                    qr.make(fit=True)
+
+                    img = qr.make_image(fill_color="black", back_color="white")
+
+                    # Génération de la version miniaturisée
+                    thumbnail = img.copy()
+                    thumbnail.thumbnail((100, 100))  # Redimensionnement de l'image
+                    thumbnail_buffer = BytesIO()
+                    thumbnail.save(thumbnail_buffer, format='PNG')
+                    thumbnail_buffer.seek(0)
+
+                    # Sauvegarde de la version miniaturisée
+                    thumbnail_filename = f'qr_code_thumbnail_{order.pk}.png'
+                    order.qr_code_thumbnail.save(thumbnail_filename, File(thumbnail_buffer), save=False)
+                    order.save()
+
+                    # Obtenez l'URL de l'image du QR code à partir de la vue qui sert les fichiers statiques
+                    """qr_code_url = reverse('qr_code_thumbnail', kwargs={'pk': order.pk})
+                    order.qr_code_url = qr_code_url  # Stockez l'URL dans votre modèle
+                    order.save()"""
 
         # On garde nos articles commandé mais casse la relation avec le panier pour le vider
         self.orders.clear()

@@ -1,17 +1,26 @@
+import secrets
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.forms import model_to_dict
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.forms import UserForm
 from accounts.models import ShippingAddress
+import secrets
 
 # On récupère la fonction get user model
 User = get_user_model()
 
 
 # Create your views here.
+
+def create_auth_key(user):
+    auth_key = secrets.token_urlsafe(16)  # Génère une clé aléatoire sécurisée
+    user.auth_key = auth_key
+    user.save()
 
 
 def signup(request):
@@ -24,13 +33,17 @@ def signup(request):
         email = request.POST["email"]
         password = request.POST["password"]
         # On créer un utilisateur à partir de User en récupérant les données envoyées
-        user = User.objects.create_user(username=username,
-                                        first_name=first_name,
-                                        email=email,
-                                        password=password)
+        User = get_user_model()
+        user = User.objects.create_user(email=email,
+                                        password=password,
+                                        first_name=first_name)
         # On connecte notre utilisateur crée avec la fonction login ci-dessous qui prend en paramètre la requête et le
         # nom d'utilisateur
         login(request, user)
+
+        # Générer une clé d'authentification et l'associer à l'utilisateur
+        create_auth_key(user)
+
         return redirect('index')
 
     return render(request, 'accounts/signup.html')
@@ -77,6 +90,8 @@ def profile(request):
 
     form = UserForm(instance=request.user)
     addresses = request.user.addresses.all()
+    # qrcode = get_object_or_404(Order, user=request.user)
+    # qrcode = order.qr_code_thumbnail
 
     return render(request, "accounts/profile.html", context={"form": form, "addresses": addresses})
 

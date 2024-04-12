@@ -3,4 +3,6 @@
 {% block content %}
     <h1>Votre paiement a été accepté !</h1>
     <p>Vous recevrez vos billets d'ici un jour.</p>
+    <p>Voici votre QRCode à présenter le jour de l'évènement:</p>
+    <img src="{{ qr_code_thumbnail.url }}" alt="QR Code">
 {% endblock %}
