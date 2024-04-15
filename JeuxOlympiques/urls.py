@@ -29,5 +29,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('stripe-webhook/', stripe_webhook, name="stripe-webhook"),
     path('accounts/', include('accounts.urls')),
-    path('billeterie/', include('store.urls'))
+    path('billeterie/', include('store.urls')),
+    path('sports/', include('sports.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

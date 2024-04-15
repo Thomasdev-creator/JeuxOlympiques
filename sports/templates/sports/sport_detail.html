@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{{ sport.name }}</h2>
+    <p>{{ sport.description }}</p>
+    <img src="{{ sport.thumbnail.url }}" alt="Image du sport">
+    <a href="{% url 'sports:all-sports' %}">Retourner à la liste des sports</a>
+{% endblock %}

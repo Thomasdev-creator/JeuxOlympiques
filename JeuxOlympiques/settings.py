@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'accounts',
     'tailwind',
     'theme',
+    'sports',
 ]
 
 MIDDLEWARE = [

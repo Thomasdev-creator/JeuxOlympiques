@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from JeuxOlympiques import settings
 from accounts.models import CustomUser, ShippingAddress
+from sports.models import Sports
 from store.forms import OrderForm
 # Permet de récupérer les produits dans la base de données
 from store.models import Ticket, Cart, Order
@@ -30,9 +31,10 @@ environ.Env.read_env()
 def index(request):
     # Manager qui me permet de récupérer les tickets
     tickets = Ticket.objects.all()
+    sports = Sports.objects.all()[:3]
     # On prend en premier paramètre la requête puis on retourne notre ficbier html
     # Context = clé/valeur
-    return render(request, 'tickets/index.html', context={'tickets': tickets})
+    return render(request, 'tickets/index.html', context={'tickets': tickets, 'sports': sports})
 
 
 def ticket_detail(request, slug):

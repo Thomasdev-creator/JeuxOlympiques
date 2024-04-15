@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Tout les sports</h3>
+    {% for sport in sports %}
+        <h2>{{ sport.name }}</h2>
+        <a href="{{ sport.get_absolute_url }}">Plus d'informations</a>
+        <a href="{% url 'index' %}">Retourner à la page d'accueil</a>
+    {% endfor %}
+{% endblock %}
