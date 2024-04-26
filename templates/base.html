@@ -5,20 +5,21 @@
     <meta charset="UTF-8">
     <title>PARIS 2024</title>
     <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+          rel="stylesheet">
 </head>
-<body class="bg-gray-300">
+<body>
+{% include 'navbar.html' %}
 <!-- On récupère l'url à partir du name indiquer dans le fichier urls.py -->
 <a href="{% url 'index' %}">
-    <h1 class="text-4xl text-center pt-4">PARIS 2024</h1>
+    <h1 class="text-clampLg text-center pt-6 text-HighContrastText">PARIS 2024</h1>
 </a>
 <!-- On affiche le bouton pour s'inscrire seulement si l'utilisateur n'est pas connecté -->
 <!-- user et is_authenticated sont disponibles par défault -->
 {% if user.is_authenticated %}
-    <p>Bonjour {{ user.email }}, vous êtes connecté!</p>
-    <a href="{% url 'accounts:logout' %}">Déconnexion</a>
-{% else %}
-    <a href="{% url 'accounts:login' %}">Connexion</a>
-    <a href="{% url 'accounts:signup' %}">S'inscrire</a>
+    <p class="text-8xl">Bonjour {{ user.email }}, vous êtes connecté!</p>
 {% endif %}
 
 <!-- Relation OneToOne, le panier de l'utilisateur est donc retourné -->
@@ -30,6 +31,5 @@
 {% endif %}
 {% block content %}
 {% endblock %}
-
 </body>
 </html>

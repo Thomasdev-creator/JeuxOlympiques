@@ -161,4 +161,10 @@ STRIPE_API_KEY = env('STRIPE_API_KEY')
 STATICFILES_DIRS = [
     BASE_DIR / "JeuxOlympiques" / "static"
 ]
+LIVERELOAD = {
+    'enabled': True,
+    'host': '127.0.0.1',
+    'port': 8000,
+    'patterns': ['*.html', '*.css', '*.js'],
+}
 

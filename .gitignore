@@ -5,3 +5,6 @@ media/
 assets/
 *.pyc
 .idea/
+.coverage
+htmlcov/*
+!htmlcov/CouvertureTest.html

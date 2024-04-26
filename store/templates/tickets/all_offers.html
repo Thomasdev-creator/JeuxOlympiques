@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Toutes les offres</h3>
+    {% for offer in all_offers %}
+        <h2>{{ offer.name }}</h2>
+        <a href="{{ offer.get_absolute_url }}">Plus d'informations</a>
+        <a href="{% url 'index' %}">Retourner à la page d'accueil</a>
+    {% endfor %}
+{% endblock %}

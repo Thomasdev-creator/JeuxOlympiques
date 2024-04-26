@@ -1,0 +1,39 @@
+{% load static %}
+<section>
+    <nav class="fixed top-0 z-20 bg-AppBackground p-4 w-full grid grid-cols-none shadow-md md:max-w-7xl md:grid-cols-menu
+md:shadow-none md:relative md:mx-auto md:bg-transparent">
+        <div class="flex justify-between items-center md:justify-center">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'img/FlammeOlympique.PNG' %}" alt="Accueil logo" class="w-12 rounded-full border-SubtleBordersandSeparators shadow-md">
+        </a>
+        <button class="icon-toggle bg-UIElementBackground rounded-md p-2 inline-flex items-center ring-1 ring-SubtleBordersandSeparators ring-opacity-20 md:hidden">
+            <img src="{% static 'Logos/hamburger-menu.svg' %}" alt="Menu hamburger">
+        </button>
+         </div>
+
+
+        <ul class="toggle-menu hidden px-1 pt-6 bg-SubtleBackground flex flex-col md:flex md:bg-transparent md:pt-0 md:flex-row md:space-x-10 md:w-auto md:items-center md:justify-center">
+                <li class="py-2 text-center border-t border-SubtleBordersandSeparators md:border-0"><a href="{% url 'index' %}" class="font-medium text-lg text-HighContrastText hover:text-LowContrastText">Accueil</a></li>
+            {% if user.is_authenticated %}
+                <li class="py-2 text-center border-t border-SubtleBordersandSeparators md:border-0"><a href="{% url 'accounts:profile' %}" class="font-medium text-lg text-HighContrastText hover:text-LowContrastText">Profile</a></li>
+                <li class="py-2 text-center border-t border-SubtleBordersandSeparators md:border-0"><a href="{% url 'sports:all-sports' %}" class="font-medium text-lg text-HighContrastText hover:text-LowContrastText">Sports</a></li>
+                <li class="py-2 text-center border-t border-SubtleBordersandSeparators md:border-0"><a href="{% url 'store:all-offers' %}" class="font-medium text-lg text-HighContrastText hover:text-LowContrastText">Les offres</a></li>
+                <li class="py-2 text-center border-t border-SubtleBordersandSeparators md:border-0"><a href="{% url 'accounts:logout' %}" class="font-medium text-lg text-HighContrastText hover:text-LowContrastText">Déconnexion</a></li>
+                {% if user.is_superuser %}
+                    <li class="py-2 text-center border-t border-SubtleBordersandSeparators md:border-0"><a href="{% url 'admin:index' %}" class="font-medium text-lg text-HighContrastText hover:text-LowContrastText">Administration</a></li>
+                {% endif %}
+            {% else %}
+                <li class="py-2 text-center border-t border-SubtleBordersandSeparators md:border-0"><a href="{% url 'sports:all-sports' %}" class="font-medium text-lg text-HighContrastText hover:text-LowContrastText">Sports</a></li>
+                <li class="py-2 text-center border-t border-SubtleBordersandSeparators md:border-0"><a href="{% url 'store:all-offers' %}" class="font-medium text-lg text-HighContrastText hover:text-LowContrastText">Les offres</a></li>
+                <li class="py-2 text-center border-t border-SubtleBordersandSeparators md:border-0 border-b"><a href="{% url 'accounts:signup' %}" class="font-medium text-lg text-HighContrastText hover:text-LowContrastText">Inscription</a></li>
+            {% endif %}
+        </ul>
+
+    <div class="toggle-menu hidden flex justify-center items-center mt-6 md:mt-0 md:justify-end md:flex">
+        <a href="{% url 'accounts:login' %}" class="shadow-md px-6 py-2 border ring-SubtleBordersandSeparators font-medium rounded-md text-HighContrastText hover:bg-UIElementBackground hover:text-LowContrastText bg-SubtleBackground text-center w-40">Connexion</a>
+    </div>
+    </nav>
+
+</section>
+<script src="{% static 'Javascript/navbar.js' %}"></script>
+

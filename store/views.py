@@ -2,6 +2,9 @@ import secrets
 from os import environ
 from pprint import pprint
 
+# import cv2
+# import numpy as np
+# from pyzbar.pyzbar import decode
 import environ
 import stripe
 from django.contrib.auth.decorators import login_required
@@ -35,6 +38,11 @@ def index(request):
     # On prend en premier paramètre la requête puis on retourne notre ficbier html
     # Context = clé/valeur
     return render(request, 'tickets/index.html', context={'tickets': tickets, 'sports': sports})
+
+
+def all_offers(request):
+    all_offers = Ticket.objects.all()
+    return render(request, 'tickets/all_offers.html', context={'all_offers': all_offers})
 
 
 def ticket_detail(request, slug):
@@ -179,6 +187,44 @@ def complete_order(data, user, auth_key):
 
     # Effacer le contenu du panier après la commande
     return HttpResponse(status=200)
+
+# Je travaille encore sur ce code permettant le scan du billet,
+# Ce code n'est pas encore fonctionnelle
+
+
+"""def verify_qrccode(combined_key):
+    try:
+        return Order.objects.get(combined_key=combined_key)
+    except Order.DoesNotExist:
+        return None
+
+
+def scan_qr_code(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    decoded_objects = decode(gray)
+
+    for obj in decoded_objects:
+        combined_key = obj.data.decode('utf-8')
+        order = verify_qrccode(combined_key)
+        if order is not None:
+            return combined_key
+    return None
+
+
+def scan_qr_view(request):
+    scan_result = None
+
+    if request.method == 'POST' and 'image' in request.FILES:
+        image = cv2.imdecode(np.fromstring(request.FILES['image'].read(), np.uint8), cv2.IMREAD_COLOR)
+        scan_result = scan_qr_code(image)
+        if scan_result is not None:
+            order = verify_qrccode(scan_result)
+            if order is not None:
+                scan_result = f"Commande trouvée: {order.user}"
+            else:
+                scan_result = "La clé n'existe pas"
+
+    return render(request, 'tickets/scan.html', {'scan_result': scan_result})"""
 
 
 def save_shipping_adress(data, user):

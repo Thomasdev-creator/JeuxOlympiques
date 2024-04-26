@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Résultat du Scan</h1>
+    {% if scan_result %}
+        <p>{{ scan_result }}</p>
+    {% else %}
+        <p>Aucun résultat de scan disponible.</p>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" capture="environment">
+        <button type="submit">Scanner</button>
+    </form>
+{% endblock %}
