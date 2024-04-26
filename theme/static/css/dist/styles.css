@@ -889,6 +889,10 @@ html {
   margin-top: 0.5rem;
 }
 
+.mt-auto {
+  margin-top: auto;
+}
+
 .block {
   display: block;
 }
@@ -931,6 +935,14 @@ html {
 
 .h-screen {
   height: 100vh;
+}
+
+.max-h-20 {
+  max-height: 5rem;
+}
+
+.max-h-40 {
+  max-height: 10rem;
 }
 
 .min-h-\[450px\] {
@@ -981,6 +993,14 @@ html {
   max-width: 20rem;
 }
 
+.max-w-20 {
+  max-width: 5rem;
+}
+
+.max-w-40 {
+  max-width: 10rem;
+}
+
 .flex-grow {
   flex-grow: 1;
 }
@@ -1023,6 +1043,14 @@ html {
   grid-template-columns: none;
 }
 
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -1045,6 +1073,10 @@ html {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.gap-8 {
+  gap: 2rem;
 }
 
 .space-x-3 > :not([hidden]) ~ :not([hidden]) {
@@ -1133,6 +1165,16 @@ html {
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
+.bg-SolidBackgrounds {
+  --tw-bg-opacity: 1;
+  background-color: rgb(62 99 221 / var(--tw-bg-opacity));
+}
+
+.bg-UIElementBorderAndFocusRings {
+  --tw-bg-opacity: 1;
+  background-color: rgb(171 189 249 / var(--tw-bg-opacity));
 }
 
 .object-cover {
@@ -1346,6 +1388,11 @@ html {
   --tw-ring-color: rgb(171 189 249 / var(--tw-ring-opacity));
 }
 
+.ring-HoveredUIElementBorder {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(141 164 239 / var(--tw-ring-opacity));
+}
+
 .ring-opacity-20 {
   --tw-ring-opacity: 0.2;
 }
@@ -1373,9 +1420,18 @@ html {
   background-color: rgb(225 233 255 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-HoveredSolidBackgrounds:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(51 88 212 / var(--tw-bg-opacity));
+}
+
 .hover\:text-LowContrastText:hover {
   --tw-text-opacity: 1;
   color: rgb(58 91 199 / var(--tw-text-opacity));
+}
+
+.hover\:accent-HoveredSolidBackgrounds:hover {
+  accent-color: #3358d4;
 }
 
 @media (min-width: 640px) {
@@ -1450,6 +1506,14 @@ html {
     grid-template-columns: 100px 1fr 100px;
   }
 
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .md\:flex-row {
     flex-direction: row;
   }
@@ -1504,5 +1568,11 @@ html {
     --tw-shadow: 0 0 #0000;
     --tw-shadow-colored: 0 0 #0000;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

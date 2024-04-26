@@ -65,6 +65,7 @@
         <hr class="w-1/4 mt-5 mx-auto border-HighContrastText">
         <p class="mt-5 text-clampSm text-HighContrastText">Voici les offres disponibles pour chaque sports aux Jeux
             Olympiques</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for ticket in tickets %}
             <div class="mt-8 flex flex-wrap justify-center items-center flex-col md:flex-row">
                 <div class="min-h-[450px] w-72 flex flex-col shadow-md ring-1 ring-UIElementBorderAndFocusRings border border-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder rounded-lg mt-7 mx-4 px-6 py-4 text-left hover:bg-HoveredUIElementBackground">
@@ -91,14 +92,17 @@
                                 <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
                                 <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
                             </li>
+                            <li class="flex space-x-3 py-2">
+                                <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
+                                <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
+                            </li>
                         </ul>
-
+                        <a href="{{ ticket.get_absolute_url }}" class="mt-auto block w-full bg-UIElementBorderAndFocusRings text-HighContrastText text-center shadow-md ring-1 ring-HoveredUIElementBorder rounded-lg">Voir l'offre</a>
                     </div>
                 </div>
             </div>
-            <img src="{{ ticket.thumbnail_url }}" alt="{{ ticket.type_of_ticket }}" style="max-width: 250px;">
-            <a href="{{ ticket.get_absolute_url }}">Voir l'offre</a>
         {% endfor %}
+        </div>
     </section>
 
 
