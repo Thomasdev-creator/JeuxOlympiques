@@ -55,54 +55,141 @@
                 plus</a>
         {% endfor %}
     </section>
+
+    <!-- Bandeau -->
+
+    <section
+            class="bg-gradient-to-r from-SolidBackgrounds to-SubtleBordersandSeparators py-12 px-4 text-center sm:py-16 sm:px-6 lg:px-8 lg:py-20">
+        <h2 class="text-3xl font-extrabold text-HighContrastText md:text-5xl">
+            ACHETEZ VOS BILLETS
+        </h2>
+        <p class="mt-3 px-4 text-md text-HighContrastText max-w-md mx-auto sm:text-xl sm:mt-4 md:max-w-lg">
+            Prenez place pour l’exceptionnel ! Des billets à l’unité aux packages Hospitalité et Voyage, découvrez les
+            offres disponibles pour les Jeux Olympiques et Paralympiques de Paris 2024.
+        </p>
+
+        <div class="flex justify-center items-center mt-10 flex-col space-y-10 sm:space-y-0 sm:space-x-10 sm:flex-row">
+
+            <div class="flex flex-col justify-center items-center">
+                <p class="text-4xl font-extrabold text-HighContrastText md:text-5xl">32</p>
+                <p class="mt-2 text-lg font-medium text-HighContrastText">Sports</p>
+            </div>
+
+            <div class="flex flex-col justify-center items-center">
+                <p class="text-4xl font-extrabold text-HighContrastText md:text-5xl">17</p>
+                <p class="mt-2 text-lg font-medium text-HighContrastText">Jours de sport</p>
+            </div>
+
+            <div class="flex flex-col justify-center items-center">
+                <p class="text-4xl font-extrabold text-HighContrastText md:text-5xl">329</p>
+                <p class="mt-2 text-lg font-medium text-HighContrastText">Évènements</p>
+            </div>
+        </div>
+    </section>
     <!-- On boucle à travers les billets de la base de données -->
     <!-- alt correspond à la description de l'image -->
 
     <!-- Section offres disponibles -->
 
-    <section class="relative bg-SubtleBackground pt-20 pb-20 px-4 md:pt-10 md:pb-10">
+    <section class="relative bg-SubtleBackground pt-5 pb-20 px-4 md:pt-5 md:pb-10">
         <h1 class="text-clampMd text-center mt-40 font-bold text-HighContrastText">Offres</h1>
         <hr class="w-1/4 mt-5 mx-auto border-HighContrastText">
         <p class="mt-5 text-clampSm text-HighContrastText">Voici les offres disponibles pour chaque sports aux Jeux
             Olympiques</p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% for ticket in tickets %}
-            <div class="mt-8 flex flex-wrap justify-center items-center flex-col md:flex-row">
-                <div class="min-h-[450px] w-72 flex flex-col shadow-md ring-1 ring-UIElementBorderAndFocusRings border border-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder rounded-lg mt-7 mx-4 px-6 py-4 text-left hover:bg-HoveredUIElementBackground">
-                    <div class="mb-5 ">
-                        <h2 class="text-2xl font-bold text-HighContrastText">{{ ticket.type_of_ticket }}</h2>
-                        <p class="text-md text-LowContrastText">Détail de l'offre</p>
-                        <p class="mt-2">
-                            <span class="text-4xl font-extrabold text-HighContrastText">{{ ticket.price }}</span>
-                            <span class="font-medium text-HighContrastText">/par personne</span>
-                        </p>
-                        <p class="text-xs font-medium text-LowContrastText tracking-wide uppercase">Inclus :</p>
-                    </div>
-                    <div class="flex flex-grow flex-col">
-                        <ul>
-                            <li class="flex space-x-3 py-2">
-                                <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
-                                <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
-                            </li>
-                            <li class="flex space-x-3 py-2">
-                                <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
-                                <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
-                            </li>
-                            <li class="flex space-x-3 py-2">
-                                <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
-                                <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
-                            </li>
-                            <li class="flex space-x-3 py-2">
-                                <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
-                                <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
-                            </li>
-                        </ul>
-                        <a href="{{ ticket.get_absolute_url }}" class="mt-auto block w-full bg-UIElementBorderAndFocusRings text-HighContrastText text-center shadow-md ring-1 ring-HoveredUIElementBorder rounded-lg">Voir l'offre</a>
+            {% for ticket in tickets %}
+                <div class="mt-8 flex flex-wrap justify-center items-center flex-col md:flex-row">
+                    <div class="min-h-[450px] w-72 flex flex-col shadow-md ring-1 ring-UIElementBorderAndFocusRings border border-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder rounded-lg mt-7 mx-4 px-6 py-4 text-left hover:bg-HoveredUIElementBackground">
+                        <div class="mb-5 ">
+                            <h2 class="text-2xl font-bold text-HighContrastText">{{ ticket.type_of_ticket }}</h2>
+                            <p class="text-md text-LowContrastText">Détail de l'offre</p>
+                            <p class="mt-2">
+                                <span class="text-4xl font-extrabold text-HighContrastText">{{ ticket.price }}</span>
+                                <span class="font-medium text-HighContrastText">/par personne</span>
+                            </p>
+                            <p class="text-xs font-medium text-LowContrastText tracking-wide uppercase">Inclus :</p>
+                        </div>
+                        <div class="flex flex-grow flex-col">
+                            <ul>
+                                <li class="flex space-x-3 py-2">
+                                    <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
+                                    <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
+                                </li>
+                                <li class="flex space-x-3 py-2">
+                                    <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
+                                    <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
+                                </li>
+                                <li class="flex space-x-3 py-2">
+                                    <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
+                                    <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
+                                </li>
+                                <li class="flex space-x-3 py-2">
+                                    <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
+                                    <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
+                                </li>
+                            </ul>
+                            <a href="{{ ticket.get_absolute_url }}"
+                               class="mt-auto block w-full bg-UIElementBorderAndFocusRings text-HighContrastText text-center shadow-md ring-1 ring-HoveredUIElementBorder rounded-lg">Voir
+                                l'offre</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
         </div>
+    </section>
+
+    <!-- Section preuve sociale  -->
+
+    <div class="bg-SubtleBackground">
+        <div class="max-w-4xl mx-auto py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+            <hr class="w-1/3 mt-5 mx-auto border-HighContrastText">
+            <h2 class="pt-10 text-4xl tracking-tight font-extrabold text-HighContrastText text-center md:text-5xl">
+                Partenaires officiels
+            </h2>
+
+            <div class="mt-10 pt-10 pb-10 flex justify-center items-center space-x-5 md:space-x-10">
+                <img src="{% static 'Logos/Air_France_Logo.svg.png' %}" alt="airFrance" class="w-16 md:w-28">
+                <img src="{% static 'Logos/Électricité_de_France_logo.svg.png' %}" alt="edf" class="w-16 md:w-28">
+                <img src="{% static 'Logos/Visa_Inc._logo.svg.png' %}" alt="visa" class="w-14 md:w-28">
+            </div>
+        </div>
+    </div>
+
+    <!-- Section formulaire -->
+
+    <section class="bg-SubtleBackground pb-32 md:pb-40">
+
+        <h2 class="text-center text-HighContrastText font-medium pt-10 pb-6 text-3xl md:text-4xl">
+            Nous contacter
+        </h2>
+        <hr class="bloc mx-auto bg-HighContrastText h-1 mb-10 w-44">
+
+        <form class="space-y-6 relative bg-AppBackground max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8 xl pl-12 ring-2 ring-HoveredUIElementBorder shadow-md border-HoveredUIElementBorder rounded-lg">
+
+            <div>
+                <label for="nom" class="text-HighContrastText mb-2 block">Nom</label>
+                <input type="text" id="nom"
+                       class="block w-full ring-1 ring-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder shadow-sm py-3 px-4 border-UIElementBorderAndFocusRings rounded-md">
+            </div>
+
+            <div>
+                <label for="nom" class="text-HighContrastText mb-2 block">Prénom</label>
+                <input type="text" id="nom"
+                       class="block w-full ring-1 ring-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder shadow-sm py-3 px-4 border-UIElementBorderAndFocusRings rounded-md">
+            </div>
+
+            <div>
+                <label for="nom" class="text-HighContrastText mb-2 block">Email</label>
+                <input type="text" id="nom"
+                       class="block w-full ring-1 ring-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder shadow-sm py-3 px-4 border-UIElementBorderAndFocusRings rounded-md">
+            </div>
+
+
+            <button class="py-3 px-6 border-transparent shadow-sm text-base font-medium rounded-md text-HighContrastText bg-UIElementBackground">
+                Envoyer
+            </button>
+        </form>
+
     </section>
 
 
