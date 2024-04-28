@@ -909,6 +909,10 @@ html {
   margin-bottom: 0.5rem;
 }
 
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
 .block {
   display: block;
 }
@@ -1035,6 +1039,10 @@ html {
 
 .w-44 {
   width: 11rem;
+}
+
+.w-36 {
+  width: 9rem;
 }
 
 .max-w-60 {
@@ -1167,6 +1175,24 @@ html {
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
+.space-x-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(2.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(2.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-16 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(4rem * var(--tw-space-x-reverse));
+  margin-left: calc(4rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -1238,6 +1264,11 @@ html {
   border-color: transparent;
 }
 
+.border-SolidBackgrounds {
+  --tw-border-opacity: 1;
+  border-color: rgb(62 99 221 / var(--tw-border-opacity));
+}
+
 .bg-AppBackground {
   --tw-bg-opacity: 1;
   background-color: rgb(253 253 254 / var(--tw-bg-opacity));
@@ -1286,6 +1317,16 @@ html {
 .bg-HighContrastText {
   --tw-bg-opacity: 1;
   background-color: rgb(31 45 92 / var(--tw-bg-opacity));
+}
+
+.bg-gray-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+}
+
+.bg-HoveredUIElementBorder {
+  --tw-bg-opacity: 1;
+  background-color: rgb(141 164 239 / var(--tw-bg-opacity));
 }
 
 .bg-gradient-to-r {
@@ -1376,6 +1417,11 @@ html {
   padding-bottom: 0.75rem;
 }
 
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
 .pb-40 {
   padding-bottom: 10rem;
 }
@@ -1414,6 +1460,10 @@ html {
 
 .pl-12 {
   padding-left: 3rem;
+}
+
+.pb-5 {
+  padding-bottom: 1.25rem;
 }
 
 .text-left {
@@ -1554,6 +1604,11 @@ html {
 .text-gray-200 {
   --tw-text-opacity: 1;
   color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
 .placeholder-gray-500::-moz-placeholder {
