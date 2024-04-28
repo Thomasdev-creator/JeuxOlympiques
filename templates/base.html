@@ -16,7 +16,7 @@
 <!-- On affiche le bouton pour s'inscrire seulement si l'utilisateur n'est pas connecté -->
 <!-- user et is_authenticated sont disponibles par défault -->
 {% if user.is_authenticated %}
-    <p class="text-left text-HighContrastText text-sm">Bonjour {{ user.email }}, vous êtes connecté!</p>
+    <p class="text-left text-HighContrastText text-sm">Bonjour {{ user }}, vous êtes connecté!</p>
 {% endif %}
 
 <!-- Relation OneToOne, le panier de l'utilisateur est donc retourné -->

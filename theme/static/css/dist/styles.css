@@ -857,6 +857,11 @@ html {
   margin-right: 1rem;
 }
 
+.-mx-3 {
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
 .mt-6 {
   margin-top: 1.5rem;
 }
@@ -911,6 +916,10 @@ html {
 
 .mr-2 {
   margin-right: 0.5rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
 }
 
 .block {
@@ -1422,6 +1431,11 @@ html {
   padding-bottom: 1.25rem;
 }
 
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
 .pb-40 {
   padding-bottom: 10rem;
 }
@@ -1609,6 +1623,11 @@ html {
 .text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+.text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
 .placeholder-gray-500::-moz-placeholder {
@@ -1858,6 +1877,10 @@ html {
 
   .md\:w-28 {
     width: 7rem;
+  }
+
+  .md\:w-1\/2 {
+    width: 50%;
   }
 
   .md\:max-w-7xl {

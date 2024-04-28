@@ -2,25 +2,57 @@
 
 {% block content %}
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
+    <section class="bg-SubtleBackground pb-32 md:pb-40">
 
-        {% if messages %}
+        <h2 class="text-center text-HighContrastText font-medium pt-10 pb-6 text-3xl md:text-4xl">
+            Profile
+        </h2>
+        <hr class="bloc mx-auto bg-HighContrastText h-1 mb-10 w-44">
+
+        <form method="POST"
+              class="space-y-6 relative bg-AppBackground max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8 xl pl-12 ring-2 ring-HoveredUIElementBorder shadow-md border-HoveredUIElementBorder rounded-lg">
+
+            {% csrf_token %}
+            <div class="w-full px-3 mb-6 md:w-1/2">
+                <label for="id_first_name" class="text-HighContrastText mb-2 block">Prénom</label>
+                {{ form.first_name }}
+            </div>
+            <!-- Champ Nom de famille -->
+            <div class="w-full px-3 mb-6 md:w-1/2">
+                <label for="id_last_name" class="text-HighContrastText mb-2 block">Nom de famille</label>
+                {{ form.last_name }}
+            </div>
+            <!-- Champ Email -->
+            <div class="w-full px-3 mb-6 md:w-1/2">
+                <label for="id_email" class="text-HighContrastText mb-2 block">Email</label>
+                {{ form.email }}
+            </div>
+            <!-- Champ Mot de passe -->
+            <div class="w-full px-3 mb-6 md:w-1/2">
+                <label for="id_password" class="text-HighContrastText mb-2 block">Mot de passe</label>
+                {{ form.password }}
+            </div>
+
+            {% if messages %}
                 <ul>
                     {% for message in messages %}
                         <li>{{ message }}</li>
                     {% endfor %}
                 </ul>
+            {% endif %}
+            <button type="submit"
+                    class="shadow-md px-6 py-2 border ring-SubtleBordersandSeparators font-medium rounded-md text-HighContrastText hover:bg-UIElementBackground hover:text-LowContrastText bg-SubtleBackground text-center w-40">
+                Sauvegarder
+            </button>
+        </form>
+        {% if addresses %}
+            <h1>Adresse de livraison</h1>
         {% endif %}
-    <button type="submit">Sauvegarder</button>
-    </form>
-    {% if addresses %}
-    <h1>Adresse de livraison</h1>
-    {% endif %}
 
-    {% for address in addresses %}
-        {% include 'accounts/address.html' %}
-    {% endfor %}
+        {% for address in addresses %}
+            {% include 'accounts/address.html' %}
+        {% endfor %}
+
+    </section>
 
 {% endblock %}
