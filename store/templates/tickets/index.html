@@ -5,6 +5,9 @@
 {% block content %}
     <!-- Section présentation des Jeux -->
     <section class="relative bg-SubtleBackground px-4 pt-20 pb-40 text-center text-HighContrastText sm:pb-80 md:pt-10">
+        <a href="{% url 'index' %}">
+            <h1 class="text-clampLg text-center pt-6 text-HighContrastText">PARIS 2024</h1>
+        </a>
         <h2 class="text-center text-clampMd text-HighContrastText pt-10 pb-15 sm:pt-40 md:pb-10">Présentation des Jeux
             Olympiques</h2>
         <p>La cérémonie de passation de la flamme olympique est organisée au Stade panathénaïque à Athènes, le site où
@@ -184,10 +187,7 @@
                        class="block w-full ring-1 ring-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder shadow-sm py-3 px-4 border-UIElementBorderAndFocusRings rounded-md">
             </div>
 
-
-            <button class="py-3 px-6 border-transparent shadow-sm text-base font-medium rounded-md text-HighContrastText bg-UIElementBackground">
-                Envoyer
-            </button>
+            <button class="shadow-md px-6 py-2 border ring-SubtleBordersandSeparators font-medium rounded-md text-HighContrastText hover:bg-UIElementBackground hover:text-LowContrastText bg-SubtleBackground text-center w-40">Envoyer</button>
         </form>
 
     </section>
