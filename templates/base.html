@@ -23,7 +23,7 @@
 <!-- Affiche le panier utilisateur seulement si il n'a pas déjà été commandé -->
 {% if user.cart and not user.cart.ordered %}
     <p>
-        <a href="{% url 'store:cart' %}">Voir le panier ({{ user.cart.orders.count }})</a>
+        <a href="{% url 'store:cart' %}" class="text-left text-HighContrastText text-sm">Voir le panier ({{ user.cart.orders.count }})</a>
     </p>
 {% endif %}
 {% block content %}

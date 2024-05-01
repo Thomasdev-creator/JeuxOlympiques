@@ -1,22 +1,23 @@
 <div>
-    <h3>{{ address.name }}</h3>
+    <h3 class="text-md text-HighContrastText pt-6 pb-4 sm:pt-15 md:pb-2">{{ address.name }}</h3>
 
-    <p>
+    <p class="text-md text-HighContrastText pt-6 pb-4 sm:pt-15 md:pb-2">
         {{ address.address_1 }}
     </p>
     {% if address.address_2 %}
-        <p>
+        <p class="text-md text-HighContrastText pt-6 pb-4 sm:pt-15 md:pb-2">
             {{ address.address_2 }}
         </p>
     {% endif %}
-    <p>
+    <p class="text-md text-HighContrastText pt-6 pb-4 sm:pt-15 md:pb-2">
         {{ address.city }}, {{ address.zip_code }}
     </p>
-    <p>
+    <p class="text-md text-HighContrastText pt-6 pb-4 sm:pt-15 md:pb-2">
         {{ address.get_country_display|upper }}
     </p>
-
-    <p>
+    <div class="text-center">
+    <p class="shadow-md px-6 py-2 my-auto border ring-SubtleBordersandSeparators font-medium rounded-md text-HighContrastText hover:bg-UIElementBackground hover:text-LowContrastText bg-SubtleBackground text-center w-40">
         <a href="{% url 'accounts:delete-address' address.pk %}">Supprimer l'adresse</a>
     </p>
+        </div>
 </div>

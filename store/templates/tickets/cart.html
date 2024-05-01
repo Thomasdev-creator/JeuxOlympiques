@@ -1,25 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <section class="bg-SubtleBackground pb-32 md:pb-40">
     <!-- On redirige notre formulaire vers la vue update-quantities -->
+    <div class="text-center">
     <form method="POST" action="{% url 'store:update-quantities' %}">
         {% csrf_token %}
         <!-- Très important -->
         {{ forms.management_form }}
         {% for form in forms %}
-            <div>
-                <h3>{{ form.instance.ticket.name }}</h3>
-                <img src="{{ form.instance.ticket.thumbnail_url }}" alt="Image du billet" style="max-width: 200px">
-                <p>{{ form.as_p }}</p>
+            <div class="flex flex-col items-center">
+                <h3 class="text-center text-HighContrastText text-clampSm">{{ form.instance.ticket.name }}</h3>
+                <img src="{{ form.instance.ticket.thumbnail_url }}" alt="Image du billet" style="max-width: 200px; border-radius: 10px;" class="mx-auto mb-4">
+                <p class="text-center text-md text-HighContrastText pt-6 pb-4 sm:pt-15 md:pb-2">{{ form.as_p }}</p>
             </div>
         {% endfor %}
-        <button type="submit">Mettre à jour les quantités</button>
+        <button type="submit" class="text-center text-md text-HighContrastText pt-6 pb-4 sm:pt-15 md:pb-2">Mettre à jour les quantités</button>
     </form>
 
     <form action="{% url 'store:create-checkout-session' %}" method="post">
         {% csrf_token %}
-        <button type="submit">Procéder au paiement</button>
+        <button type="submit" class="shadow-md px-6 py-2 my-auto mb-4 border ring-SubtleBordersandSeparators font-medium rounded-md text-HighContrastText hover:bg-UIElementBackground hover:text-LowContrastText bg-SubtleBackground text-center w-40">Procéder au paiement</button>
     </form>
 
-    <a href="{% url 'store:delete-cart' %}">Supprimer le panier</a>
+    <a href="{% url 'store:delete-cart' %}" class="shadow-md px-6 py-2 my-auto border ring-SubtleBordersandSeparators font-medium rounded-md text-HighContrastText hover:bg-UIElementBackground hover:text-LowContrastText bg-SubtleBackground text-center w-40">Supprimer le panier</a>
+    </div>
+    </section>
 {% endblock %}
