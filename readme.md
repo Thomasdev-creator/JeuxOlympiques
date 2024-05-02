@@ -26,7 +26,10 @@ Pour installer et exécuter l'application localement, suivez les étapes suivant
 5. Configurez les variables d'environnement, y compris les paramètres de base de données, dans un fichier `.env`.
 6. Effectuez les migrations de la base de données à l'aide de `python manage.py migrate`.
 7. Lancez le serveur de développement avec `python manage.py runserver`.
-8. Installez TablePlus pour avoir visualiser la base de données.
+8. Executé la commande suivant en mode développement à la racine du projet pour écouter
+les évènements Stripe et pour que la page de succès suite à l'achat fonctionne "stripe listen --forward-to 127.0.0.1:8000/stripe-webhook/"
+
+9. Installez TablePlus pour avoir visualiser la base de données.
 
 ## Contribution
 
