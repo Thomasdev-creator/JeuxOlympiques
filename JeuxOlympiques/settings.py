@@ -159,7 +159,9 @@ INTERNAL_IPS = ['127.0.0.1']
 STRIPE_API_KEY = env('STRIPE_API_KEY')
 
 STATICFILES_DIRS = [
-    BASE_DIR / "JeuxOlympiques" / "static"
+    BASE_DIR / "JeuxOlympiques" / "static",
+    BASE_DIR / "accounts" / "static",
+    BASE_DIR / "sports" / "static",
 ]
 LIVERELOAD = {
     'enabled': True,

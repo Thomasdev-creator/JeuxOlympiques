@@ -1,10 +1,51 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    <h3>Toutes les offres</h3>
-    {% for offer in all_offers %}
-        <h2>{{ offer.name }}</h2>
-        <a href="{{ offer.get_absolute_url }}">Plus d'informations</a>
-        <a href="{% url 'index' %}">Retourner à la page d'accueil</a>
-    {% endfor %}
+    <section class="relative bg-SubtleBackground pt-5 pb-20 px-4 md:pt-5 md:pb-10">
+        <h1 class="text-clampMd text-center mt-0 font-bold text-HighContrastText">Offres</h1>
+        <hr class="w-1/4 mt-5 mx-auto border-HighContrastText">
+        <p class="mt-5 text-clampSm text-HighContrastText">Voici les offres disponibles pour chaque sports aux Jeux
+            Olympiques</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for offer in all_offers %}
+                <div class="mt-8 flex flex-wrap justify-center items-center flex-col md:flex-row">
+                    <div class="min-h-[450px] w-72 flex flex-col shadow-md ring-1 ring-UIElementBorderAndFocusRings border border-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder rounded-lg mt-7 mx-4 px-6 py-4 text-left hover:bg-HoveredUIElementBackground">
+                        <div class="mb-5 ">
+                            <h2 class="text-2xl font-bold text-HighContrastText">{{ offer.type_of_ticket }}</h2>
+                            <p class="text-md text-LowContrastText">Détail de l'offre</p>
+                            <p class="mt-2">
+                                <span class="text-4xl font-extrabold text-HighContrastText">{{ offer.price }}</span>
+                                <span class="font-medium text-HighContrastText">/par personne</span>
+                            </p>
+                            <p class="text-xs font-medium text-LowContrastText tracking-wide uppercase">Inclus :</p>
+                        </div>
+                        <div class="flex flex-grow flex-col">
+                            <ul>
+                                <li class="flex space-x-3 py-2">
+                                    <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
+                                    <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
+                                </li>
+                                <li class="flex space-x-3 py-2">
+                                    <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
+                                    <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
+                                </li>
+                                <li class="flex space-x-3 py-2">
+                                    <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
+                                    <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
+                                </li>
+                                <li class="flex space-x-3 py-2">
+                                    <img src="{% static 'Logos/check-circled.svg' %}" alt="Icone check" class="w-5">
+                                    <span class="text-sm text-HighContrastText">Lorem ipsum sit amet</span>
+                                </li>
+                            </ul>
+                            <a href="{{ offer.get_absolute_url }}"
+                               class="mt-auto block w-full bg-UIElementBorderAndFocusRings text-HighContrastText text-center shadow-md ring-1 ring-HoveredUIElementBorder rounded-lg">Voir
+                                l'offre</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}
