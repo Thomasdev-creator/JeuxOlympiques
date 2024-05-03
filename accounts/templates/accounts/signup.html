@@ -2,14 +2,16 @@
 
 {% block content %}
 
-        <section class="bg-SubtleBackground pb-32 md:pb-40">
+    <section class="bg-SubtleBackground pb-32 md:pb-40">
 
         <h2 class="text-center text-HighContrastText font-medium pt-10 pb-6 text-3xl md:text-4xl">
             Inscription
         </h2>
         <hr class="bloc mx-auto bg-HighContrastText h-1 mb-10 w-44">
 
-        <form method="post" class="space-y-6 relative bg-AppBackground max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8 xl pl-12 ring-2 ring-HoveredUIElementBorder shadow-md border-HoveredUIElementBorder rounded-lg">
+        <form method="post"
+              id="registrationForm"
+              class="space-y-6 relative bg-AppBackground max-w-3xl mx-auto py-16 px-4 sm:px-6 lg:px-8 xl pl-12 ring-2 ring-HoveredUIElementBorder shadow-md border-HoveredUIElementBorder rounded-lg">
             {% csrf_token %}
 
             <div>
@@ -36,9 +38,69 @@
                        class="block w-full ring-1 ring-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder shadow-sm py-3 px-4 border-UIElementBorderAndFocusRings rounded-md">
             </div>
 
-            <button type="submit" class="shadow-md px-6 py-2 border ring-SubtleBordersandSeparators font-medium rounded-md text-HighContrastText hover:bg-UIElementBackground hover:text-LowContrastText bg-SubtleBackground text-center w-40">S'inscrire</button>
+            <div>
+                <input type="checkbox" id="policyCheckbox" name="policyCheckbox" class="mr-2">
+                <label for="policyCheckbox" class="text-HighContrastText mb-2 inline-block">J'accepte la politique de
+                    sécurité</label>
+            </div>
+
+            <div class="mt-4">
+                <a href="#" id="policyLink" class="text-HighContrastText underline">Lire la politique de sécurité</a>
+            </div>
+
+            <button type="submit"
+                    id="submitButton"
+                    class="shadow-md px-6 py-2 border ring-SubtleBordersandSeparators font-medium rounded-md text-HighContrastText hover:bg-UIElementBackground hover:text-LowContrastText bg-SubtleBackground text-center w-40">
+                S'inscrire
+            </button>
         </form>
 
+        <div id="policyPopup" class="hidden fixed top-0 left-0 w-full h-full flex justify-center items-center">
+            <div class="bg-white p-6 rounded-md max-w-md border ring-2 border-UIElementBorderAndFocusRings hover:border-HoveredUIElementBorder overflow-auto"
+                 style="width: 400px; height: 420px;">
+                <h3 class="text-lg font-semibold mb-3 p-2">Politique de sécurité</h3>
+                <p class="text-sm p-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vehicula ligula
+                    et
+                    diam cursus lobortis. Suspendisse quis neque urna. Aliquam aliquet felis eu risus iaculis, in
+                    elementum lectus pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur
+                    ridiculus mus. Curabitur posuere massa ac auctor dictum. Curabitur ut accumsan sem. Etiam at
+                    imperdiet lacus. Donec euismod ligula auctor tempus hendrerit. In pharetra, eros in commodo
+                    faucibus, nunc ipsum congue est, vulputate vestibulum turpis magna in urna. Nam suscipit quis justo
+                    in volutpat. Proin egestas enim dolor, eu suscipit lorem dictum vel. Mauris sit amet velit et turpis
+                    gravida maximus. Sed at interdum orci.</p>
+
+                <button id="closePopupButton"
+                        class="shadow-md px-4 py-2 border ring-SubtleBordersandSeparators font-medium rounded-md text-HighContrastText hover:bg-UIElementBackground hover:text-LowContrastText bg-SubtleBackground text-center w-40">
+                    Fermer
+                </button>
+            </div>
+            </div>
+        </div>
+
     </section>
+
+    <script>
+        // JavaScript pour afficher la popup et gérer les événements de clic
+
+        // Lorsque l'utilisateur clique sur le lien, afficher la popup
+        document.getElementById('policyLink').addEventListener('click', function (event) {
+            event.preventDefault(); // Empêche le lien de suivre son URL
+            document.getElementById('policyPopup').classList.remove('hidden');
+        });
+
+        // Lorsque l'utilisateur clique sur le bouton de fermeture de la popup, la cacher
+        document.getElementById('closePopupButton').addEventListener('click', function () {
+            document.getElementById('policyPopup').classList.add('hidden');
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById('registrationForm').addEventListener('submit', function (event) {
+                if (!document.getElementById('policyCheckbox').checked) {
+                    event.preventDefault(); // Empêche la soumission du formulaire si la case n'est pas cochée
+                    alert('Veuillez accepter la politique de sécurité pour continuer.');
+                }
+            });
+        });
+    </script>
 
 {% endblock %}
