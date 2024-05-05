@@ -2,10 +2,14 @@
 {% load static %}
 
 {% block content %}
-    <h3>Tout les sports</h3>
-    {% for sport in sports %}
-        <h2>{{ sport.name }}</h2>
-        <a href="{{ sport.get_absolute_url }}">Plus d'informations</a>
-        <a href="{% url 'index' %}">Retourner à la page d'accueil</a>
-    {% endfor %}
+    <section class="relative bg-SubtleBackground px-4 pt-20 pb-40 text-center text-HighContrastText sm:pb-80 md:pt-10">
+        <h1 class="text-clampMd text-center mt-0 font-bold text-HighContrastText">Tous les sports</h1>
+        <hr class="w-1/4 mt-5 mx-auto border-HighContrastText">
+        <h2 class="mt-5 text-clampSm text-center text-HighContrastText">Voici tous les sports présents aux Jeux Olympiques</h2>
+        {% for sport in sports %}
+            <a href="{{ sport.get_absolute_url }}">
+                <h3 class="block mx-auto text-center justify-center items-center text-clampSm text-HighContrastText hover:text-LowContrastText pt-5">{{ sport.name }}</h3>
+            </a>
+        {% endfor %}
+    </section>
 {% endblock %}

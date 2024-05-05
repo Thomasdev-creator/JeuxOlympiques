@@ -7,12 +7,15 @@ from pprint import pprint
 # from pyzbar.pyzbar import decode
 import environ
 import stripe
+
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
+from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 from JeuxOlympiques import settings
@@ -29,8 +32,6 @@ environ.Env.read_env()
 
 
 # Create your views here.
-# On passe en paramètre la requête de l'utilisateur pour récupérer une page web
-# On va ensuite retourner des informations pour retourner un fichier html
 def index(request):
     # Manager qui me permet de récupérer les tickets
     tickets = Ticket.objects.all()
@@ -40,9 +41,14 @@ def index(request):
     return render(request, 'tickets/index.html', context={'tickets': tickets, 'sports': sports})
 
 
+# Récupère les billets de la base de données puis les affiches selon le filtre choisi
 def all_offers(request):
-    all_offers = Ticket.objects.all()
-    return render(request, 'tickets/all_offers.html', context={'all_offers': all_offers})
+    # Récupérer le prix maximum depuis les paramètres GET, s'il n'est pas fourni
+    max_price = request.GET.get('max_price',
+                                1000)  # Prix maximum par défaut à 1000
+    all_offers = Ticket.objects.filter(
+        price__lte=max_price)  # Filtre pour obtenir les billets dont le prix est inférieur ou égal au prix maximum
+    return render(request, 'tickets/all_offers.html', context={'all_offers': all_offers, 'max_price': max_price})
 
 
 def ticket_detail(request, slug):
@@ -187,6 +193,7 @@ def complete_order(data, user, auth_key):
 
     # Effacer le contenu du panier après la commande
     return HttpResponse(status=200)
+
 
 # Je travaille encore sur ce code permettant le scan du billet,
 # Ce code n'est pas encore fonctionnelle

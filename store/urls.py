@@ -1,6 +1,7 @@
 from django.urls import path
 
-from store.views import ticket_detail, add_to_cart, cart, delete_cart, create_checkout_session, checkout_success, all_offers
+from store.views import ticket_detail, add_to_cart, cart, delete_cart, create_checkout_session, checkout_success, \
+    all_offers
 from store.views import update_quantitites
 
 app_name = 'store'

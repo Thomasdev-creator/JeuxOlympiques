@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{{ sport.name }}</h2>
-    <p>{{ sport.description }}</p>
-    <img src="{{ sport.thumbnail.url }}" alt="Image du sport">
-    <a href="{% url 'sports:all-sports' %}">Retourner à la liste des sports</a>
+    <section class="relative bg-SubtleBackground px-4 pt-20 pb-40 text-center text-HighContrastText sm:pb-80 md:pt-10">
+    <h2 class="text-clampLg text-center pt-6 text-HighContrastText">{{ sport.name }}</h2>
+    <p class="text-center text-HighContrastText text-clampUsm">{{ sport.description }}</p>
+    <img src="{{ sport.thumbnail.url }}"
+         class="mx-auto rounded-full w-80 h-80 object-cover object-center border-UIElementBorderAndFocusRings pt-10 pb-10"
+         alt="Image du sport">
+    <a href="{% url 'sports:all-sports' %}" class="text-center text-HighContrastText text-clampUsm">Retourner à la liste des sports</a>
+    </section>
 {% endblock %}
