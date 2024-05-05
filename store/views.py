@@ -152,7 +152,7 @@ def stripe_webhook(request):
     payload = request.body
     # Clé obtenu après exécution de la commande stripe listen --forward-to 127.0.0.1:localhost/stripe-webhook/
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
-    endpoint_secret = env('ENDPOINT_SECRET')
+    endpoint_secret = env('PRODUCTION_ENDPOINT')
     event = None
     # On construit un évènement stripe avec try puis on renvoie un status
     try:

@@ -1,6 +1,5 @@
 .env
 env/
-media/
 .DS_Store
 assets/
 *.pyc
@@ -8,3 +7,4 @@ assets/
 .coverage
 htmlcov/*
 !htmlcov/CouvertureTest.html
+__pycache__/
